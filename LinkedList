@@ -1,0 +1,162 @@
+#include "LinkedList.h"
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	LinkedList list;
+
+	list.appendNode(5);
+	list.appendNode(8);
+	list.appendNode(10);
+	list.appendNode(12);
+
+	list.displayList();
+
+	cout << endl;
+
+	list.insertNode(11);
+
+	list.displayList();
+
+	system("pause");
+	return 0;
+}
+
+#include "LinkedList.h"
+#include <iostream>
+using namespace std;
+
+LinkedList::LinkedList()
+{
+	head = NULL; // empty list
+}
+
+void LinkedList::appendNode(int data)
+{
+	Node *tempNode = head;
+
+	Node *newNode = new Node;
+	newNode->data = data;
+	newNode->next = NULL;
+
+	if (!head) // head == NULL   empty list
+	{
+		head = newNode;
+	}
+	else
+	{
+		while (tempNode->next) //tempNode->next != NULL
+		{
+			tempNode = tempNode->next;
+		}
+		tempNode->next = newNode;
+	}
+}
+
+void LinkedList::displayList()
+{
+	Node *tempNode = head;
+	while (tempNode) // tempNode != NULL
+	{
+		cout << tempNode->data << endl;
+		tempNode = tempNode->next;
+	}
+}
+
+LinkedList::~LinkedList()
+{
+	Node *tempNode = head;
+	Node *preNode = head;
+
+	while (tempNode) // tempNode != NULL
+	{
+		preNode = tempNode;
+		tempNode = tempNode->next;
+		delete preNode;
+	}
+}
+
+void LinkedList::deleteNode(int data)
+{
+	Node *tempNode = head;
+	Node *preNode = head;
+
+	if (!head) // empty list
+	{
+		return;
+	}
+	else if (head->data == data) // delete the first value
+	{
+		head = head->next;
+		delete tempNode;
+	}
+	else
+	{
+		while (tempNode && tempNode->data != data)
+		{
+			preNode = tempNode;
+			tempNode = tempNode->next;
+		}
+
+		if (tempNode)
+		{
+			preNode->next = tempNode->next;
+			delete tempNode;
+		}
+	}
+
+}
+
+void LinkedList::insertNode(int data)
+{
+	Node *newNode = new Node;
+
+	newNode->data = data;
+
+	Node *tempNode = head;
+	Node *preNode = head;
+
+	if (!head) // empty list
+	{
+		newNode->next = NULL;
+		head = newNode;
+	}
+	else if (data < head->data) // data goes to the beginning of the list
+	{
+		newNode->next = head;
+		head = newNode;
+	}
+	else
+	{
+		while (tempNode && tempNode->data < data)
+		{
+			preNode = tempNode;
+			tempNode = tempNode->next;
+
+		}
+		preNode->next = newNode;
+		newNode->next = tempNode;
+	}
+
+	
+}
+
+struct Node
+{
+	int data;
+	Node *next;
+};
+
+class LinkedList
+{
+private:
+	Node * head;
+public:
+	LinkedList();
+	void appendNode(int);
+	void displayList();
+	~LinkedList();
+	void deleteNode(int);
+	void insertNode(int);
+};
